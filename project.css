@@ -1,5 +1,5 @@
 body{
-  background-color: white;
+  background-color: #fcf8d6;
 }
 
 h1{
@@ -18,14 +18,25 @@ section{
   background-color: white;
   border: 5px solid lightgrey;
   line-height: 50%;
-  margin-bottom: 8%;
-  padding: 1% 4%;
+  margin-bottom: 4%;
+  padding: 1% 2%;
 }
 
 #typer{
   background-color: white;
-  border: 4px solid lightgrey;
-  line-height: 50%;
-  margin-bottom: 80%;
-  padding: 5% 3%;
+  border: solid #7c889b;
+  line-height: 20%;
+  width: 80%;
+  padding: 1% 3%;
+  float: left;
+}
+
+#submitbutton{
+  width: 3.3%;
+  height: 4%;
+  padding: 1% 3%;
+  background-color: white;
+  color: green;
+  border: solid green;
+  float: right;
 }
