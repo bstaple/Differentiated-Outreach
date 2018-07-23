@@ -32,11 +32,13 @@ section{
 }
 
 #submitbutton{
-  width: 3.3%;
-  height: 4%;
+  height: .6%;
+  width: 6%;
   padding: 1% 3%;
+  line-height: 20%;
   background-color: white;
   color: green;
   border: solid green;
   float: right;
+  text-align: center;
 }
