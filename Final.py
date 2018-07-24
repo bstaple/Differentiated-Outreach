@@ -1,17 +1,9 @@
 from google.appengine.ext import ndb
 import webapp2
-import JINJA2
-import os
 
 # class Profiles(ndb.Model):
 # 		self.name = name
 # 		self.notes = ''
-
-jinja_env = jinja2.Environment(
-    loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
-    extensions = ['jinja2.ext.autoescape'],
-    autoescape = True
-)
 
 class Host(ndb.Model):
 	name = ndb.StringProperty()
