@@ -52,9 +52,6 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		# for Room in rooms:
-		# 	if Room not in rooms:
-		# 		rooms.append('Room 4', 'User 4')
 		self.response.out.write('This is working.')
 
 
