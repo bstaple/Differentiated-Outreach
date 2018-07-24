@@ -1,7 +1,7 @@
 from google.appengine.ext import ndb
 import webapp2
-import jinja2
 import os
+import jinja2
 
 JINJA_ENV = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -34,9 +34,6 @@ class WaitRoom(ndb.Model):
 	list_ofstudents = ndb.StringProperty(repeated = True)
 
 
-
-
-
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in Room.query().fetch():
@@ -46,10 +43,10 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
-class SendToRoom(webapp2.RequestHandler):
-	def get(self):
-		content = JINJA_ENV.get_template(Differentiated-Outreach/host.html)
-		self.response.out.write(content)
+# class SendToRoom(webapp2.RequestHandler):
+# 	def get(self):
+# 		content = JINJA_ENV.get_template('Differentiated-Outreach/host.html')
+# 		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def dispatch(self):
@@ -64,11 +61,11 @@ class CreateRoomHandler(webapp2.RequestHandler):
 		self.response.out.write('This is working.')
 
 
-
+print('done')
 app = webapp2.WSGIApplication([
 ('/', ShowRoomsHandler),
 ('/create', CreateRoomHandler),
-('/room', SendToRoom),
+# ('/room', SendToRoom),
 
 
 ], debug=True)

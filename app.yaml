@@ -5,3 +5,7 @@ threadsafe: true
 handlers:
 - url: .*
   script: Final.app
+
+libraries:
+- name: jinja2
+  version: latest
