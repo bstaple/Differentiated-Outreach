@@ -1,13 +1,13 @@
 import webapp2
 import models
 
-class Profiles(object):
+class Profiles(ndb.Model):
 	def __init__(self, Student, Hosts):
 		self.name = name
 		self.notes = ''
 
 
-class Host(object):
+class Host(ndb.Model):
 	def __init__(self, name, notes='', room_number = '0'):
 		host_database = HostDatabase()
 		self.name = name
@@ -16,7 +16,7 @@ class Host(object):
 		host_database.room_number = room_number
 		host_database.host_message = notes
 
-class Student(object):
+class Student(ndb.Model):
 	def __init__(self, name, Host, notes=''):
 		student_database = StudentDatabase()
 		self.name = name
@@ -26,7 +26,7 @@ class Student(object):
 		student_database.name = name
 		student_database.corresponding_host = Host.name
 
-class Room(object):
+class Room(ndb.Model):
 	def __init__(self, host, name = 'Marco\'s room', students = [], number_of_students = len(students)):
 		room_database = RoomDatabase()
 		self.name = name
@@ -37,7 +37,7 @@ class Room(object):
 		room_database.number_of_users = number_of_students
 		room_database.rooms.append(self)
 
-class WaitRoom(Object):
+class WaitRoom(ndb.Model):
 	def __init__(self, host_owner, list_ofstudents = []):
 		self.list_of_students
 
