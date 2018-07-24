@@ -42,7 +42,6 @@ class WaitRoom(Object):
 		self.list_of_students
 
 
-
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in room_database.rooms.query().fetch():
