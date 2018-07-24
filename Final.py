@@ -33,15 +33,17 @@ class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
 	list_ofstudents = ndb.StringProperty(repeated = True)
 
+result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		for room in Room.query().fetch():
-			print room.name
-			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />"
-			% (room.host, room.name.strip()))
-			self.response.out.write('<br>')
+		result_template = JINJA_ENV.get_template('Templates/rooms.html')
+		rooms = Room.query().fetch()
+		result_dictionary = {
+		'rooms' : rooms,
+		}
 		print("Rooms shown successfully.")
+		self.response.out.write(result_template.render(result_dictionary))
 
 # class SendToRoom(webapp2.RequestHandler):
 # 	def get(self):
@@ -56,7 +58,11 @@ class CreateRoomHandler(webapp2.RequestHandler):
 
 		new_room = Room(host = self.request.get("hostName"))
 		new_room.put()
+		Create_dictionary = {
+		'hostName' : new_room.host,
+		}
 		print 'Room added'
+		self.response.out.write(result_template.render(Create_dictionary))
 		self.redirect('/')
 		self.response.out.write('This is working.')
 
