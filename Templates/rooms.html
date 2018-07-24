@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Rooms</title>
+    <link type="text/css" rel="stylesheet" href="/css/rooms.css">
+  </head>
+
+  <body>
+    <form>
+      <input type = 'button' value = 'Create a new room!' action = '/create?hostName={{ hostName }}'/>
+      {% for room in rooms %}
+        <input type = 'button' value = 'Go to {{ room.host }} room' action ='/room?roomName={{ room.name }}'/>
+        <br/>
+      {% endfor %}
+    </form>
+
+
+
+  </body>
+
+</html>
