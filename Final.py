@@ -1,18 +1,20 @@
 import webapp2
 
-class Profiles(object):
-	def __init__(self, Student, Hosts):
-		self.name = name
-		self.notes = ''
+
+
+class Pages(object):
+	def __init__(self, Student, Host):
+		self.Student= Student
+		self.Host = Host
 
 
 class Host(object):
 	def __init__(self, name, notes=''):
 		self.name = name
-		self.notes = ''
+		self.notes = notes
 
 class Student(object):
-	def __init__(self, name, notes='', Host):
+	def __init__(self, name, Host, notes=''):
 		self.name = name
 		self.notes = notes
 		self.Host = Host
@@ -32,7 +34,7 @@ rooms = [
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in rooms:
-			self.response.out.write(room.name + ' is owned by ' + room.host_user + ' ' + room.student_list)
+			self.response.out.write(room.name + ' is owned by ' + room.host_user + ' students are: ' + room.student_list)
 			self.response.out.write('<br>')
 
 
