@@ -1,5 +1,5 @@
 body{
-  background-color: #306b6b;
+  background-color: #7b9fad;
   font-family: 'FontName', Fallback, sans-serif;
   font-size: large;
 }
@@ -8,16 +8,19 @@ h1{
   background-color: #333842;
   font-style: italic;
   color: white;
+  background: linear-gradient(-20deg, #d7deea, #676e7c);
+  text-shadow: 2px 2px 4px #000000;
   border: solid black;
   line-height: 10%;
-  padding: 3%;
+  padding: 1%;
 }
 
 section{
-  width: 50%;
+  width: 45%;
   height:60%;
   background-color: #f4fcfc;
   border: 5px solid #79869b;
+  border-radius: 35px;
   line-height: 50%;
   margin-bottom: 4%;
   padding: 1% 2%;
@@ -29,7 +32,9 @@ sectiontwo{
   height:60%;
   background-color: #f4fcfc;
   border: 5px solid #79869b;
+  border-radius: 35px;
   line-height: 50%;
+  margin-bottom: 4%;
   padding: 1% 2%;
   float:right;
 }
