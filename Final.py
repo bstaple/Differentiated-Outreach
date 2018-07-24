@@ -41,7 +41,8 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in Room.query().fetch():
 			print room.name
-			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name.strip()))
+			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />"
+			% (room.host, room.name.strip()+))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
