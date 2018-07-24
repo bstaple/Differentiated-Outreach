@@ -1,4 +1,5 @@
 import webapp2
+import models
 
 class Profiles(object):
 	def __init__(self, Student, Hosts):
@@ -7,15 +8,21 @@ class Profiles(object):
 
 
 class Host(object):
-	def __init__(self, name, notes=''):
+	def __init__(self, name, notes='', room_number = '0'):
+		host_database = models.HostDatabase()
 		self.name = name
 		self.notes = ''
+		host_database.name = name
+		host_database.room_number = room_number
+		host_database.host_message = notes
 
 class Student(object):
 	def __init__(self, name, notes='', Host):
+		student_database = models.StudentDatabase
 		self.name = name
 		self.notes = notes
 		self.Host = Host
+
 
 class Room(object):
 	def __init__(self, name, host, students):
