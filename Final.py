@@ -9,7 +9,7 @@ class Profiles(object):
 
 class Host(object):
 	def __init__(self, name, notes='', room_number = '0'):
-		host_database = models.HostDatabase()
+		host_database = HostDatabase()
 		self.name = name
 		self.notes = ''
 		host_database.name = name
@@ -17,18 +17,26 @@ class Host(object):
 		host_database.host_message = notes
 
 class Student(object):
-	def __init__(self, name, notes='', Host):
-		student_database = models.StudentDatabase
+	def __init__(self, name, Host, notes=''):
+		student_database = StudentDatabase()
 		self.name = name
 		self.notes = notes
 		self.Host = Host
+		student_database.notes = notes
+		student_database.name = name
+
 
 
 class Room(object):
-	def __init__(self, name, host, students):
+	def __init__(self, name, host, students, number_of_students = len(students)):
+		room_database = RoomDatabase()
 		self.name = name
 		self.host_user = host
 		self.student_list = students
+		room_database.room_name = name
+		room_database.host_name = host
+		room_database.number_of_users
+
 
 rooms = [
 	Room('Room 1', 'host1', 'Jimmy'),
