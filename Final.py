@@ -1,6 +1,6 @@
 from google.appengine.ext import ndb
 import webapp2
-import JINJA2
+import jinja2
 import os
 
 JINJA_ENV = jinja2.Environment(
@@ -42,7 +42,7 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 		for room in Room.query().fetch():
 			print room.name
 			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />"
-			% (room.host, room.name.strip()+))
+			% (room.host, room.name.strip()))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
