@@ -1,24 +1,16 @@
 import webapp2
 import models
 
-
-
-class Pages(object):
-	def __init__(self, Student, Host):
-		self.Student= Student
-		self.Host = Host
+class Profiles(object):
+	def __init__(self, Student, Hosts):
+		self.name = name
+		self.notes = ''
 
 
 class Host(object):
 	def __init__(self, name, notes='', room_number = '0'):
 		host_database = HostDatabase()
 		self.name = name
-<<<<<<< HEAD
-		self.notes = notes
-
-class Student(object):
-	def __init__(self, name, Host, notes=''):
-=======
 		self.notes = ''
 		host_database.name = name
 		host_database.room_number = room_number
@@ -27,7 +19,6 @@ class Student(object):
 class Student(object):
 	def __init__(self, name, Host, notes=''):
 		student_database = StudentDatabase()
->>>>>>> e9d1dd32af69296f3922c19b556f1080c480d7cf
 		self.name = name
 		self.notes = notes
 		self.Host = Host
@@ -59,7 +50,7 @@ class WaitRoom(Object):
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in rooms:
-			self.response.out.write(room.name + ' is owned by ' + room.host_user + ' students are: ' + room.student_list)
+			self.response.out.write(room.name + ' is owned by ' + room.host_user + ' ' + room.student_list)
 			self.response.out.write('<br>')
 
 
