@@ -12,9 +12,11 @@ JINJA_ENV = jinja2.Environment(
 	autoescape=True
 )
 
-# class Profiles(ndb.Model):
-# 		self.name = name
-# 		self.notes = ''
+
+class Account(ndb.Model):
+	username = ndb.StringProperty()
+	password = ndb.StringProperty()
+	user_type = ndb.StringProperty()
 
 class Host(ndb.Model):
 	name = ndb.StringProperty()
@@ -36,18 +38,23 @@ class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
 	list_ofstudents = ndb.StringProperty(repeated = True)
 
-logIn_template = JINJA_ENV.get_template('Templates/login.html')
+
 class LoginPageHandler(webapp2.RequestHandler):
 	def dispatch(self):
+		logIn_template = JINJA_ENV.get_template('Templates/login.html')
+		self.response.write(logIn_template.render())
+	def post(self):
+		user = self.request.get("username")
+		passw = self.request.get("password")
+		type = self.request.get('hostORstudent')
+		accounts = Account(user,passw,type)
+		self.response.write(user)
 
 
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		email = get_current_user_email()
-
-		if(email):
 			result_template = JINJA_ENV.get_template('Templates/rooms.html')
 			rooms = Room.query().fetch()
 			result_dictionary = {
@@ -55,8 +62,6 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			}
 			print("Rooms shown successfully.")
 			self.response.out.write(result_template.render(result_dictionary))
-		else:
-			self.redirect('/login')
 
 # class SendToRoom(webapp2.RequestHandler):
 # 	def get(self):
