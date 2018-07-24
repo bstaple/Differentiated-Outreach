@@ -5,7 +5,7 @@ import Final
 
 class RoomDatabase(ndb.Model):
     room_name = ndb.StringProperty()
-    host_name = ndb.StringProperty()
+    host_user = ndb.StringProperty()
     number_of_users = ndb.IntegerProperty()
 
 class StudentDatabase(ndb.model):

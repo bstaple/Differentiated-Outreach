@@ -31,18 +31,21 @@ class Room(object):
 	def __init__(self, name, host, students, number_of_students = len(students)):
 		room_database = RoomDatabase()
 		self.name = name
-		self.host_user = host
+		self.host_user = host.name
 		self.student_list = students
 		room_database.room_name = name
-		room_database.host_name = host
-		room_database.number_of_users
+		room_database.host_user = host.name
+		room_database.number_of_users = number_of_students
+
+class WaitRoom(Object):
+	def __init__(self,list_ofstudents = [], host_owner):
 
 
-rooms = [
-	Room('Room 1', 'host1', 'Jimmy'),
-	Room('Room 2', 'host2', 'Carl'),
-	Room('Room 3', 'host3', 'Jack, Sally and John')
-]
+# rooms = [
+# 	Room('Room 1', 'host1', 'Jimmy'),
+# 	Room('Room 2', 'host2', 'Carl'),
+# 	Room('Room 3', 'host3', 'Jack, Sally and John')
+# ]
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
