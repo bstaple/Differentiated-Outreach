@@ -27,26 +27,29 @@ class Student(object):
 		student_database.corresponding_host = Host.name
 
 class Room(object):
-	def __init__(self, name, host, students, number_of_students = len(students)):
+	def __init__(self, host, name = 'Marco\'s room', students = [], number_of_students = len(students)):
 		room_database = RoomDatabase()
 		self.name = name
-		self.host_user = host.name
+		self.host_user = host
 		self.student_list = students
 		room_database.room_name = name
-		room_database.host_user = host.name
+		room_database.host_user = host
 		room_database.number_of_users = number_of_students
 		room_database.rooms.append(self)
 
 class WaitRoom(Object):
-	def __init__(self,list_ofstudents = [], host_owner):
+	def __init__(self, host_owner, list_ofstudents = []):
+		self.list_of_students
 
 
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		for room in rooms:
-			self.response.out.write(room.name + ' is owned by ' + room.host_user + ' ' + room.student_list)
+		for room in room_database.rooms.query().fetch():
+			self.response.out.write("<input type = 'button' value = 'Go to Room' action = '/room?roomName='" +room.name+
+			"' />" + '<p>' +room.name + ' is owned by ' + room.host_user + '</p>')
 			self.response.out.write('<br>')
+		console.log("Rooms shown successfully.")
 
 
 
@@ -57,7 +60,8 @@ class CreateRoomHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
 ('/', ShowRoomsHandler),
-('/create', CreateRoomHandler)
+('/create', CreateRoomHandler),
+('/room', SendToRoom),
 
 
 ], debug=True)
