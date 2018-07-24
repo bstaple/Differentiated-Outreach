@@ -36,13 +36,10 @@ class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
 	list_ofstudents = ndb.StringProperty(repeated = True)
 
-
+logIn_template = JINJA_ENV.get_template('Templates/login.html')
 class LoginPageHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		result = {
-		'url' : users.create_login_url('/')
-		}
-		send_json(self, result)
+
 
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
