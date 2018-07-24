@@ -1,9 +1,17 @@
 from google.appengine.ext import ndb
 import webapp2
+import JINJA2
+import os
 
 # class Profiles(ndb.Model):
 # 		self.name = name
 # 		self.notes = ''
+
+jinja_env = jinja2.Environment(
+    loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions = ['jinja2.ext.autoescape'],
+    autoescape = True
+)
 
 class Host(ndb.Model):
 	name = ndb.StringProperty()
@@ -33,7 +41,8 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in Room.query().fetch():
 			print room.name
-			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name.strip()))
+			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />"
+			% (room.host, room.name.strip()+))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
