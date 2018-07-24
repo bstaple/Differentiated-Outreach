@@ -39,7 +39,7 @@ class Room(object):
 
 class WaitRoom(Object):
 	def __init__(self,list_ofstudents = [], host_owner):
-		self.list_of_students
+		self.list_of_students = list_ofstudents
 
 
 
