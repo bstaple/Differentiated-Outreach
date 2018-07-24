@@ -1,4 +1,7 @@
 from google.appengine.ext import ndb
+from google.appengine.api import users
+from google.appengine.api import memcache
+import json
 import webapp2
 import os
 import jinja2
@@ -33,17 +36,30 @@ class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
 	list_ofstudents = ndb.StringProperty(repeated = True)
 
+
+class LoginPageHandler(webapp2.RequestHandler):
+	def dispatch(self):
+		result = {
+		'url' : users.create_login_url('/')
+		}
+		send_json(self, result)
+
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		result_template = JINJA_ENV.get_template('Templates/rooms.html')
-		rooms = Room.query().fetch()
-		result_dictionary = {
-		'rooms' : rooms,
-		}
-		print("Rooms shown successfully.")
-		self.response.out.write(result_template.render(result_dictionary))
+		email = get_current_user_email()
+
+		if(email):
+			result_template = JINJA_ENV.get_template('Templates/rooms.html')
+			rooms = Room.query().fetch()
+			result_dictionary = {
+			'rooms' : rooms,
+			}
+			print("Rooms shown successfully.")
+			self.response.out.write(result_template.render(result_dictionary))
+		else:
+			self.redirect('/login')
 
 # class SendToRoom(webapp2.RequestHandler):
 # 	def get(self):
@@ -56,10 +72,10 @@ class CreateRoomHandler(webapp2.RequestHandler):
 		# 	if Room not in rooms:
 		# 		rooms.append('Room 4', 'User 4')
 
-		new_room = Room(host = self.request.get("hostName"))
+		new_room = Room(host = self.request.get("name"))
 		new_room.put()
 		Create_dictionary = {
-		'hostName' : new_room.host,
+		'name' : new_room.host,
 		}
 		print 'Room added'
 		self.response.out.write(result_template.render(Create_dictionary))
@@ -69,6 +85,7 @@ class CreateRoomHandler(webapp2.RequestHandler):
 
 print('done')
 app = webapp2.WSGIApplication([
+('/login', LoginPageHandler),
 ('/', ShowRoomsHandler),
 ('/create', CreateRoomHandler),
 # ('/room', SendToRoom),
