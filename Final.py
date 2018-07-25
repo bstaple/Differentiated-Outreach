@@ -58,7 +58,7 @@ class WaitRoom(ndb.Model):
 
 
 class LoginPageHandler(webapp2.RequestHandler):
-	def dispatch(self):
+	def get(self):
 		logIn_template = jinja_env.get_template('Templates/login.html')
 		self.response.write(logIn_template.render())
 
@@ -115,7 +115,7 @@ class SendToRoom(webapp2.RequestHandler):
 
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
-			self.response.out.write(content)
+			self.response.out.write(content.render())
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
