@@ -22,7 +22,7 @@ class UserInfo(ndb.Model):
 
 class HostPageHandler(webapp2.RequestHandler):
   def get(self):
-    template = jinja_env.get_template('host.html')
+    template = JINJA_ENV.get_template('Templates/host.html')
     self.response.write(template.render())
 
 
