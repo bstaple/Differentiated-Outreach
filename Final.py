@@ -71,7 +71,7 @@ class LoginPageHandler(webapp2.RequestHandler):
 		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-result_template = jinja_env.get_template('Templates/rooms.html')
+#result_template = jinja_env.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
@@ -81,7 +81,7 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
-
+		
 		result_template = jinja_env.get_template('Templates/rooms.html')
 		rooms = Room.query().fetch()
 		result_dictionary = {}
@@ -97,8 +97,6 @@ class MainHandler(webapp2.RequestHandler):
 		}
 		print("Rooms shown successfully.")
 		self.response.out.write(result_template.render(result_dictionary))
-
-
 
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
