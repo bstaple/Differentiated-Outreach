@@ -3,22 +3,35 @@ from google.appengine.api import users
 from google.appengine.api import memcache
 import json
 import webapp2
-import os
+import json
 import jinja2
+import os
+import time
+import random
 
-JINJA_ENV = jinja2.Environment(
+jinja_env = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
 	autoescape=True
 )
 
 
+
 class UserInfo(ndb.Model):
 	name = ndb.StringProperty()
+
+class HostPageHandler(webapp2.RequestHandler):
+  def get(self):
+    template = jinja_env.get_template('host.html')
+    self.response.write(template.render())
+
+
+
 class Account(ndb.Model):
 	username = ndb.StringProperty()
 	password = ndb.StringProperty()
 	user_type = ndb.StringProperty()
+
 
 class Host(ndb.Model):
 	name = ndb.StringProperty()
@@ -58,7 +71,15 @@ class LoginPageHandler(webapp2.RequestHandler):
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
-	def get(self):
+	def dispatch(self):
+
+		for room in Room.query().fetch():
+			print room.name
+			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
+			self.response.out.write('<br>')
+		print("Rooms shown successfully.")
+
+			result_template = JINJA_ENV.get_template('Templates/rooms.html')
 			rooms = Room.query().fetch()
 			result_dictionary = {
 			'rooms' : rooms,
@@ -68,10 +89,11 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			print("Rooms shown successfully.")
 			self.response.out.write(result_template.render(result_dictionary))
 
-# class SendToRoom(webapp2.RequestHandler):
-# 	def get(self):
-# 		content = JINJA_ENV.get_template('Differentiated-Outreach/host.html')
-# 		self.response.out.write(content)
+
+class SendToRoom(webapp2.RequestHandler):
+	def get(self):
+		content = jinja_env.get_template('host.html')
+		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
@@ -97,7 +119,8 @@ app = webapp2.WSGIApplication([
 ('/login', LoginPageHandler),
 ('/', ShowRoomsHandler),
 ('/create', CreateRoomHandler),
-# ('/room', SendToRoom),
+('/room', SendToRoom),
+('/hostpage', HostPageHandler)
 
 
 ], debug=True)
