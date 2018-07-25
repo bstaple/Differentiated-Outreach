@@ -50,6 +50,7 @@ class Room(ndb.Model):
 		host_notes = ndb.StringProperty(repeated = True)
 
 
+
 class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
 	list_ofstudents = ndb.StringProperty(repeated = True)
@@ -71,15 +72,8 @@ class LoginPageHandler(webapp2.RequestHandler):
 
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
-class ShowRoomsHandler(webapp2.RequestHandler):
-	def dispatch(self):
-
-		# for room in Room.query().fetch():
-		# 	print room.name
-		# 	self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
-		# 	self.response.out.write('<br>')
-		# print("Rooms shown successfully.")
-
+class MainHandler(webapp2.RequestHandler):
+	def get(self):
 			result_template = JINJA_ENV.get_template('Templates/rooms.html')
 			rooms = Room.query().fetch()
 			result_dictionary = {
@@ -91,6 +85,7 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			self.response.out.write(result_template.render(result_dictionary))
 
 
+
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		if self.request.get("hostORstudent") == 'host':
@@ -99,11 +94,18 @@ class SendToRoom(webapp2.RequestHandler):
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
-		new_room = Room(host = self.request.get("name"))
-		new_room.put()
-		self.response.out.write(new_room)
-		self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
-		#self.redirect('/create?name=' + self.request.get("name"))
+		if self.request.get('hostORstudent') == 'host':
+			new_room = Room(host = self.request.get("name"))
+			new_room.put()
+			self.response.out.write(new_room)
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+		else:
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+class GetRoomsHandler(webapp2.RequestHandler):
+	def get(self):
+		self.refresh()
+
+		# self.redirect('/create?name=' + self.request.get("name"))
 		# print 'Room added'
 		# self.response.out.write(result_template.render(Create_dictionary))
 		# print 'hey whats up'
@@ -119,10 +121,12 @@ class CreateRoomHandler(webapp2.RequestHandler):
 print('done')
 app = webapp2.WSGIApplication([
 ('/login', LoginPageHandler),
-('/', ShowRoomsHandler),
+('/', MainHandler),
 ('/create', CreateRoomHandler),
 ('/room', SendToRoom),
-('/hostpage', HostPageHandler)
+('/hostpage', HostPageHandler),
+('/getRoom', GetRoomsHandler),
+
 
 
 ], debug=True)
