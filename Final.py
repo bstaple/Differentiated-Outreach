@@ -15,8 +15,6 @@ jinja_env = jinja2.Environment(
 	autoescape=True
 )
 
-
-
 class UserInfo(ndb.Model):
 	name = ndb.StringProperty()
 
@@ -58,7 +56,7 @@ class WaitRoom(ndb.Model):
 
 
 class LoginPageHandler(webapp2.RequestHandler):
-	def dispatch(self):
+	def get(self):
 		logIn_template = jinja_env.get_template('Templates/login.html')
 		self.response.write(logIn_template.render())
 
@@ -71,7 +69,7 @@ class LoginPageHandler(webapp2.RequestHandler):
 		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-#result_template = jinja_env.get_template('Templates/rooms.html')
+result_template = jinja_env.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
