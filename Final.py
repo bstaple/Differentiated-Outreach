@@ -13,6 +13,8 @@ JINJA_ENV = jinja2.Environment(
 )
 
 
+class UserInfo(ndb.Model):
+	name = ndb.StringProperty()
 class Account(ndb.Model):
 	username = ndb.StringProperty()
 	password = ndb.StringProperty()
@@ -40,25 +42,28 @@ class WaitRoom(ndb.Model):
 
 
 class LoginPageHandler(webapp2.RequestHandler):
-	def dispatch(self):
+	def get(self):
 		logIn_template = JINJA_ENV.get_template('Templates/login.html')
 		self.response.write(logIn_template.render())
+
 	def post(self):
-		user = self.request.get("username")
-		passw = self.request.get("password")
-		type = self.request.get('hostORstudent')
-		accounts = Account(user,passw,type)
-		self.response.write(user)
+		username = self.request.get("username")
+		password = self.request.get("password")
+		user_type = self.request.get('hostORstudent')
+		accounts = Account(username = username,password = password,user_type = user_type)
+		accounts.put()
+		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
 result_template = JINJA_ENV.get_template('Templates/rooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
-	def dispatch(self):
-			result_template = JINJA_ENV.get_template('Templates/rooms.html')
+	def get(self):
 			rooms = Room.query().fetch()
 			result_dictionary = {
 			'rooms' : rooms,
+			'name' : self.request.get('name'),
+			'hostORstudent' : self.request.get('hostORstudent')
 			}
 			print("Rooms shown successfully.")
 			self.response.out.write(result_template.render(result_dictionary))
@@ -69,20 +74,22 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 # 		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
-	def dispatch(self):
-		# for Room in rooms:
-		# 	if Room not in rooms:
-		# 		rooms.append('Room 4', 'User 4')
-
+	def post(self):
 		new_room = Room(host = self.request.get("name"))
 		new_room.put()
-		Create_dictionary = {
-		'name' : new_room.host,
-		}
-		print 'Room added'
-		self.response.out.write(result_template.render(Create_dictionary))
-		self.redirect('/')
-		self.response.out.write('This is working.')
+		self.response.out.write(new_room)
+		self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+		#self.redirect('/create?name=' + self.request.get("name"))
+		# print 'Room added'
+		# self.response.out.write(result_template.render(Create_dictionary))
+		# print 'hey whats up'
+		# self.redirect('/')
+	# def post(self):
+	# 	new_room = Room(host = self.request.get("name"))
+	# 	new_room.put()
+
+
+
 
 
 print('done')

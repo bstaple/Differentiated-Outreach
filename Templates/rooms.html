@@ -5,8 +5,14 @@
   </head>
 
   <body>
+    <form action = '/?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+      <input type = 'submit' value = 'Get new rooms'/>
+    </form>
+    <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+      <input type = 'submit' value = 'Create a new room!'/>
+      <br/>
+    </form>
     <form>
-      <input type = 'button' value = 'Create a new room!' action = '/create?name={{ name }}'/>
       {% for room in rooms %}
         <input type = 'button' value = 'Go to {{ room.host }} room' action ='/room?roomName={{ room.name }}'/>
         <br/>
