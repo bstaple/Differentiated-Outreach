@@ -22,7 +22,7 @@ class UserInfo(ndb.Model):
 
 class HostPageHandler(webapp2.RequestHandler):
   def get(self):
-    template = jinja_env.get_template('host.html')
+    template = JINJA_ENV.get_template('Templates/host.html')
     self.response.write(template.render())
 
 
@@ -89,7 +89,7 @@ class MainHandler(webapp2.RequestHandler):
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		if self.request.get("hostORstudent") == 'host':
-			content = jinja_env.get_template('Templates/host.html')
+			content = JINJA_ENV.get_template('Templates/host.html')
 		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
