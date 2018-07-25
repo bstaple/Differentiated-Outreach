@@ -9,23 +9,22 @@ import os
 import time
 import random
 
-jinja_env = jinja2.Environment(
+JINJA_ENV = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
 	autoescape=True
 )
+
+
+
+class UserInfo(ndb.Model):
+	name = ndb.StringProperty()
 
 class HostPageHandler(webapp2.RequestHandler):
   def get(self):
     template = jinja_env.get_template('host.html')
     self.response.write(template.render())
 
-
-# class MessageHandler(webapp2.RequestHandler):
-# 	def get(self):
-#
-#
-# 	def post(self):
 
 
 class Account(ndb.Model):
@@ -49,6 +48,8 @@ class Room(ndb.Model):
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
+		host_notes = ndb.StringProperty(repeated = True)
+
 
 
 class WaitRoom(ndb.Model):
@@ -60,12 +61,14 @@ class LoginPageHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		logIn_template = jinja_env.get_template('Templates/login.html')
 		self.response.write(logIn_template.render())
+
 	def post(self):
-		user = self.request.get("username")
-		passw = self.request.get("password")
-		type = self.request.get('hostORstudent')
-		accounts = Account(user,passw,type)
-		self.response.write(user)
+		username = self.request.get("username")
+		password = self.request.get("password")
+		user_type = self.request.get('hostORstudent')
+		accounts = Account(username = username,password = password,user_type = user_type)
+		accounts.put()
+		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
 result_template = jinja_env.get_template('Templates/rooms.html')
@@ -82,10 +85,18 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 		result_template = jinja_env.get_template('Templates/rooms.html')
 		rooms = Room.query().fetch()
 		result_dictionary = {
+class MainHandler(webapp2.RequestHandler):
+	def get(self):
+			result_template = JINJA_ENV.get_template('Templates/rooms.html')
+			rooms = Room.query().fetch()
+			result_dictionary = {
 			'rooms' : rooms,
+			'name' : self.request.get('name'),
+			'hostORstudent' : self.request.get('hostORstudent')
 			}
 		print("Rooms shown successfully.")
 		self.response.out.write(result_template.render(result_dictionary))
+
 
 
 class SendToRoom(webapp2.RequestHandler):
@@ -103,31 +114,45 @@ class SendToRoom(webapp2.RequestHandler):
 		chat_box.put()
 
 
+		if self.request.get("hostORstudent") == 'host':
+			content = jinja_env.get_template('Templates/host.html')
+		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
-	def dispatch(self):
-		# for Room in rooms:
-		# 	if Room not in rooms:
-		# 		rooms.append('Room 4', 'User 4')
+	def post(self):
+		if self.request.get('hostORstudent') == 'host':
+			new_room = Room(host = self.request.get("name"))
+			new_room.put()
+			self.response.out.write(new_room)
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+		else:
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+class GetRoomsHandler(webapp2.RequestHandler):
+	def get(self):
+		self.refresh()
 
-		new_room = Room(host = self.request.get("name"))
-		new_room.put()
-		Create_dictionary = {
-		'name' : new_room.host,
-		}
-		print 'Room added'
-		self.response.out.write(result_template.render(Create_dictionary))
-		self.redirect('/')
-		self.response.out.write('This is working.')
+		# self.redirect('/create?name=' + self.request.get("name"))
+		# print 'Room added'
+		# self.response.out.write(result_template.render(Create_dictionary))
+		# print 'hey whats up'
+		# self.redirect('/')
+	# def post(self):
+	# 	new_room = Room(host = self.request.get("name"))
+	# 	new_room.put()
+
+
+
 
 
 print('done')
 app = webapp2.WSGIApplication([
 ('/login', LoginPageHandler),
-('/', ShowRoomsHandler),
+('/', MainHandler),
 ('/create', CreateRoomHandler),
 ('/room', SendToRoom),
-('/hostpage', HostPageHandler)
+('/hostpage', HostPageHandler),
+('/getRoom', GetRoomsHandler),
+
 
 
 ], debug=True)
