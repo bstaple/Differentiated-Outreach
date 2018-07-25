@@ -44,6 +44,7 @@ class Student(ndb.Model):
 	Host = ndb.StringProperty()
 
 class Room(ndb.Model):
+		chat_messages = ndb.StringProperty()
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
@@ -57,8 +58,8 @@ class WaitRoom(ndb.Model):
 
 
 class LoginPageHandler(webapp2.RequestHandler):
-	def get(self):
-		logIn_template = JINJA_ENV.get_template('Templates/login.html')
+	def dispatch(self):
+		logIn_template = jinja_env.get_template('Templates/login.html')
 		self.response.write(logIn_template.render())
 
 	def post(self):
@@ -70,8 +71,20 @@ class LoginPageHandler(webapp2.RequestHandler):
 		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-result_template = JINJA_ENV.get_template('Templates/rooms.html')
+result_template = jinja_env.get_template('Templates/rooms.html')
 
+class ShowRoomsHandler(webapp2.RequestHandler):
+	def dispatch(self):
+
+		for room in Room.query().fetch():
+			print room.name
+			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
+			self.response.out.write('<br>')
+		print("Rooms shown successfully.")
+
+		result_template = jinja_env.get_template('Templates/rooms.html')
+		rooms = Room.query().fetch()
+		result_dictionary = {
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
 			result_template = JINJA_ENV.get_template('Templates/rooms.html')
@@ -81,13 +94,26 @@ class MainHandler(webapp2.RequestHandler):
 			'name' : self.request.get('name'),
 			'hostORstudent' : self.request.get('hostORstudent')
 			}
-			print("Rooms shown successfully.")
-			self.response.out.write(result_template.render(result_dictionary))
+		print("Rooms shown successfully.")
+		self.response.out.write(result_template.render(result_dictionary))
 
 
 
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
+		type = self.request.get("hostORstudent")
+		host_content = jinja_env.get_template('Templates/host.html')
+		messages = Room.query().fetch()
+		self.response.out.write(host_content.render())
+		for message in messages:
+			self.response.out.write(''' user message %s ''' % (message.chat_messages))
+
+	def post(self):
+		chat_messages = self.request.get("chat_messages")
+		chat_box = Room(chat_messages = self.request.get("chat_messages"))
+		chat_box.put()
+
+
 		if self.request.get("hostORstudent") == 'host':
 			content = JINJA_ENV.get_template('Templates/host.html')
 		self.response.out.write(content)
