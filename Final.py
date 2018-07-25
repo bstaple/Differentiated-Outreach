@@ -9,7 +9,7 @@ import os
 import time
 import random
 
-JINJA_ENV = jinja2.Environment(
+jinja_env = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
 	autoescape=True
@@ -84,16 +84,17 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 
 		result_template = jinja_env.get_template('Templates/rooms.html')
 		rooms = Room.query().fetch()
-		result_dictionary = {
+		result_dictionary = {}
+
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
-			result_template = JINJA_ENV.get_template('Templates/rooms.html')
-			rooms = Room.query().fetch()
-			result_dictionary = {
-			'rooms' : rooms,
-			'name' : self.request.get('name'),
-			'hostORstudent' : self.request.get('hostORstudent')
-			}
+		result_template = jinja_env.get_template('Templates/rooms.html')
+		rooms = Room.query().fetch()
+		result_dictionary = {
+		'rooms' : rooms,
+		'name' : self.request.get('name'),
+		'hostORstudent' : self.request.get('hostORstudent')
+		}
 		print("Rooms shown successfully.")
 		self.response.out.write(result_template.render(result_dictionary))
 
@@ -106,7 +107,7 @@ class SendToRoom(webapp2.RequestHandler):
 		messages = Room.query().fetch()
 		self.response.out.write(host_content.render())
 		for message in messages:
-			self.response.out.write(''' user message %s ''' % (message.chat_messages))
+			self.response.out.write(''' user message: %s ''' % (message.chat_messages))
 
 	def post(self):
 		chat_messages = self.request.get("chat_messages")
@@ -116,7 +117,7 @@ class SendToRoom(webapp2.RequestHandler):
 
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
-		self.response.out.write(content)
+			self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
