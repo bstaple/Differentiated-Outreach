@@ -1,22 +1,19 @@
 <html>
   <head>
+    <script src="static/Final.js"></script>
     <title> Host </title>
-    <link rel="stylesheet" href="host.css">
+    <link rel="stylesheet" href="static/host.css">
   </head>
     <body>
         <h1 align="left"> Quanta Canvas Host: </h1>
         <img src= "https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/NYCS-bull-trans-Q.svg/1024px-NYCS-bull-trans-Q.svg.png" align="top" width= "15%" height="22%">
-        <section>
-          "Live feed"
-        </section>
-        <div>
-          <form>
-<<<<<<< HEAD:host.html
-            <input id = 'typerhost' type = "textfield"/>
-=======
-            
-            <input id = 'typerhost' type = "textbox"/>
->>>>>>> f9ba9c10683cb64af77f9c6268616598a12820b3:Templates/host.html
+        <div id="section"> {{ chat_messages }}
         </div>
-    </body>
+        <div>
+          <form method = "post">
+            <input id = 'typerhost' type = "textfield" name = "chat_messages"/>
+            <input type="submit" value="send message" id="send_message">
+          </form>
+        </div>
+      </body>
 </html>
