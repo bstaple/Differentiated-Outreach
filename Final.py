@@ -1,17 +1,21 @@
 from google.appengine.ext import ndb
 import webapp2
-import os
+import json
 import jinja2
+import os
+import time
+import random
 
-JINJA_ENV = jinja2.Environment(
+jinja_env = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
 	autoescape=True
 )
 
-# class Profiles(ndb.Model):
-# 		self.name = name
-# 		self.notes = ''
+class HostPageHandler(webapp2.RequestHandler):
+  def get(self):
+    template = jinja_env.get_template('host.html')
+    self.response.write(template.render())
 
 class Host(ndb.Model):
 	name = ndb.StringProperty()
@@ -38,15 +42,14 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 		for room in Room.query().fetch():
 			print room.name
-			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />"
-			% (room.host, room.name.strip()))
+			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
-# class SendToRoom(webapp2.RequestHandler):
-# 	def get(self):
-# 		content = JINJA_ENV.get_template('Differentiated-Outreach/host.html')
-# 		self.response.out.write(content)
+class SendToRoom(webapp2.RequestHandler):
+	def get(self):
+		content = jinja_env.get_template('host.html')
+		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def dispatch(self):
@@ -65,7 +68,8 @@ print('done')
 app = webapp2.WSGIApplication([
 ('/', ShowRoomsHandler),
 ('/create', CreateRoomHandler),
-# ('/room', SendToRoom),
+('/room', SendToRoom),
+('/hostpage', HostPageHandler)
 
 
 ], debug=True)
