@@ -81,7 +81,7 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
 			self.response.out.write('<br>')
 		print("Rooms shown successfully.")
-		
+
 		result_template = jinja_env.get_template('Templates/rooms.html')
 		rooms = Room.query().fetch()
 		result_dictionary = {}
