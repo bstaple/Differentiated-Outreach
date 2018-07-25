@@ -9,7 +9,7 @@ import os
 import time
 import random
 
-jinja_env = jinja2.Environment(
+JINJA_ENV = jinja2.Environment(
 	loader = jinja2.FileSystemLoader(os.path.dirname(__file__)),
 	extensions=['jinja2.ext.autoescape'],
 	autoescape=True
@@ -47,6 +47,7 @@ class Room(ndb.Model):
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
+		host_notes = ndb.StringProperty(repeated = True)
 
 
 class WaitRoom(ndb.Model):
@@ -73,11 +74,11 @@ result_template = JINJA_ENV.get_template('Templates/rooms.html')
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
 
-		for room in Room.query().fetch():
-			print room.name
-			self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
-			self.response.out.write('<br>')
-		print("Rooms shown successfully.")
+		# for room in Room.query().fetch():
+		# 	print room.name
+		# 	self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
+		# 	self.response.out.write('<br>')
+		# print("Rooms shown successfully.")
 
 			result_template = JINJA_ENV.get_template('Templates/rooms.html')
 			rooms = Room.query().fetch()
@@ -92,7 +93,8 @@ class ShowRoomsHandler(webapp2.RequestHandler):
 
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
-		content = jinja_env.get_template('host.html')
+		if self.request.get("hostORstudent") == 'host':
+			content = jinja_env.get_template('Templates/host.html')
 		self.response.out.write(content)
 
 class CreateRoomHandler(webapp2.RequestHandler):
