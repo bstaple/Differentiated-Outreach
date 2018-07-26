@@ -10,6 +10,7 @@
     <form action = '/?name={{ name }}&hostORstudent={{ hostORstudent }}'>
       <input type = 'submit' value = 'Get new rooms'/>
     </form>
+    <a href="/login">Log In </a>
     <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}'>
       <input type = "textbox" name = "Room_name" placeholder= "Room Name"/>
       <input type = 'submit' value = 'Create a new room!'/>
@@ -23,7 +24,7 @@
       {% endfor %}
     </form>
   </div>
-  
+
 
 
   </body>
