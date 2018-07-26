@@ -121,18 +121,19 @@ class SendToRoom(webapp2.RequestHandler):
 		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
 
 	def post(self):
-		rkey = self.request.get('key')
+      # get the key from the request
+	      rkey = self.request.get('key')
 
-      # construct an ndb.Key object
-      	key = ndb.Key(urlsafe=rkey)
-      	if key:
-        # use the ndb.Key object's get() method to retrieve the Model associated with that particular key
-        m = key.get()
+	      # construct an ndb.Key object
+	      key = ndb.Key(urlsafe=rkey)
+	      if key:
+	        # use the ndb.Key object's get() method to retrieve the Model associated with that particular key
+	        m = key.get()
 		room_query_object.put()
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
 			self.response.out.write(content.render())
-		self.redirect('/room')
+			self.redirect('/room')
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
