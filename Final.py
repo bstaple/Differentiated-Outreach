@@ -113,8 +113,8 @@ class SendToRoom(webapp2.RequestHandler):
 		'messages': messages,
 		'name' : self.request.get("name")
 		}
+		print ["This is what should come out"] + messages
 		self.response.out.write(host_content.render(output_variables))
-		print messages
 
 		# for message in messages:
 		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
@@ -130,10 +130,6 @@ class SendToRoom(webapp2.RequestHandler):
 		  print m
 		  m.chat_messages = self.request.get('chat_messages')
 		  m.put()
-		  if self.request.get("hostORstudent") == 'host':
-				content = jinja_env.get_template('Templates/host.html')
-				self.response.out.write(content.render())
-
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
 		if self.request.get('hostORstudent') == 'host':
