@@ -1,4 +1,4 @@
-<html>
+<!-- <html>
   <head>
     <script src="static/Final.js"></script>
     <title> Host </title>
@@ -15,4 +15,37 @@
           </form>
         </div>
       </body>
+</html> !-->
+
+
+<html>
+  <head>
+    <title>Rooms</title>
+    <link type="text/css" rel="stylesheet" href="/css/rooms.css">
+  </head>
+
+  <body>
+    <form action = "/login"><input type = "submit" value = "Login"></form>
+    <a href="/?name={{ name }}&hostORstudent={{ hostORstudent }}">get new rooms</a>
+
+    <form action = '/?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+      <input type = 'submit' value = 'Get new rooms'/>
+    </form>
+    <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+      <input type = 'submit' value = 'Create a new room!'/>
+      <br/>
+    </form>
+    <div id = 'Rooms'>
+    <form>
+      {% for room in rooms %}
+        <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}'>{{ room.host }}</a>
+        <br/>
+      {% endfor %}
+    </form>
+  </div>
+
+
+
+  </body>
+
 </html>
