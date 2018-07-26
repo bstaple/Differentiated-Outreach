@@ -6,7 +6,7 @@ import webapp2
 import json
 import jinja2
 import os
-import time
+import datetime
 import random
 
 jinja_env = jinja2.Environment(
@@ -116,7 +116,7 @@ class SendToRoom(webapp2.RequestHandler):
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
 			self.response.out.write(content.render())
-
+		self.redirect('/room')
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
