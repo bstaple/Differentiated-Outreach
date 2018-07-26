@@ -102,28 +102,43 @@ class MainHandler(webapp2.RequestHandler):
 
 class SendToRoom(webapp2.RequestHandler):
 	def get(self):
-		type = self.request.get("hostORstudent")
-		host_content = jinja_env.get_template('Templates/host.html')
-		id = self.request.get('key')
-		key = ndb.Key('Room', int(id))
-		m = key.get()
-		messages = m.chat_messages
-		print messages
-		# messages.append(str(message))
-		print ["Messages : "] + messages
+		if self.request.get('hostORstudent') == 'host':
+			type = self.request.get("hostORstudent")
+			host_content = jinja_env.get_template('Templates/host.html')
+			id = self.request.get('key')
+			key = ndb.Key('Room', int(id))
+			m = key.get()
+			messages = m.chat_messages
+			print messages
+			# messages.append(str(message))
+			print ["Messages : "] + messages
 
-		# message = self.request.get('chat_messages')
-		# messages.append(message)
+			# message = self.request.get('chat_messages')
+			# messages.append(message)
 
 
-		output_variables = {
-		'messages': messages,
-		'name' : self.request.get("name")
-		}
-		print ["This is what should come out"] + messages
-		self.response.out.write(host_content.render(output_variables))
-		# for message in messages:
-		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
+			output_variables = {
+			'messages': messages,
+			'name' : self.request.get("name")
+			}
+			print ["This is what should come out"] + messages
+			self.response.out.write(host_content.render(output_variables))
+		else:
+			student_content = jinja_env.get_template('Templates/student.html')
+			id = self.request.get('key')
+			key = ndb.Key('Room', int(id))
+			m = key.get()
+			messages = m.chat_messages
+			print messages
+			# messages.append(str(message))
+			print ["Messages : "] + messages
+
+			output_variables = {
+			'messages': messages,
+			'name' : self.request.get("name")
+			}
+			print ["This is what should come out"] + messages
+			self.response.out.write(student_content.render(output_variables))
 
 	def post(self):
 		  id = self.request.get('key')

@@ -20,8 +20,11 @@
 <!-- This section will let the student write !-->
 <form>
   <input id = 'typer' type = "textbox"/>
+</form>
+{% for message in messages %}
+  <p>{{ name }} : {{ message}}</p>
+{% endfor %}
 </div>
-
 <div>
 <input id= "submitbutton" type = 'submit' value = 'Submit'/>
 </div>
