@@ -20,7 +20,7 @@ class UserInfo(ndb.Model):
 
 class HostPageHandler(webapp2.RequestHandler):
   def get(self):
-    template = JINJA_ENV.get_template('Templates/host.html')
+    template = jinja_env.get_template('Templates/host.html')
     self.response.write(template.render())
 
 
@@ -47,8 +47,6 @@ class Room(ndb.Model):
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
 		host_notes = ndb.StringProperty(repeated = True)
-
-
 
 class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
@@ -136,9 +134,6 @@ class GetRoomsHandler(webapp2.RequestHandler):
 	# def post(self):
 	# 	new_room = Room(host = self.request.get("name"))
 	# 	new_room.put()
-
-
-
 
 
 print('done')
