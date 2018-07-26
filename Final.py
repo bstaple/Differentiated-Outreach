@@ -120,15 +120,15 @@ class SendToRoom(webapp2.RequestHandler):
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
 			self.response.out.write(content.render())
-			
+
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
 		if self.request.get('hostORstudent') == 'host':
-			new_room = Room(host = self.request.get("name"))
+			new_room = Room(host = self.request.get("name"), name = self.request.get("Room_name"))
 			new_room.put()
 			self.response.out.write(new_room)
-			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent') + "&roomName=" + self.request.get("Room_name"))
 		else:
 			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
 class GetRoomsHandler(webapp2.RequestHandler):
