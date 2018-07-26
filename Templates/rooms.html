@@ -11,15 +11,18 @@
       <input type = 'submit' value = 'Get new rooms'/>
     </form>
     <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+      <input type = "textbox" name = "Room_name" placeholder= "Room Name"/>
       <input type = 'submit' value = 'Create a new room!'/>
       <br/>
     </form>
+    <div id = 'Rooms'>
     <form>
       {% for room in rooms %}
-        <input type = 'button' value = 'Go to {{ room.host }} room' action ='/room?roomName={{ room.name }}'/>
+        <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}'>{{ room.name }}</a>
         <br/>
       {% endfor %}
     </form>
+  </div>
 
 
 

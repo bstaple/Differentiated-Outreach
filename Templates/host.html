@@ -1,6 +1,7 @@
 <html>
   <head>
-    <script src="static/Final.js"></script>
+    <script >
+    </script>
     <title> Host </title>
     <link rel="stylesheet" href="static/host.css">
   </head>
@@ -10,14 +11,15 @@
         <div id="section"> {{ chat_messages }}
         </div>
         <div>
-
-          <form>
-            <input id = 'typerhost' type = "textfield"/>
-
           <form method = "post">
             <input id = 'typerhost' type = "textfield" name = "chat_messages"/>
             <input type="submit" value="send message" id="send_message">
           </form>
+        </div>
+        <div id = 'messages'>
+          {% for message in messages %}
+            <p>{{ name }} : {{ message.chat_messages}}</p>
+          {% endfor %}
         </div>
       </body>
 </html>

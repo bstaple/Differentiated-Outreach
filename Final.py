@@ -42,7 +42,7 @@ class Student(ndb.Model):
 	Host = ndb.StringProperty()
 
 class Room(ndb.Model):
-		chat_messages = ndb.StringProperty()
+		chat_messages = ndb.StringProperty(repeated = True)
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
@@ -98,28 +98,33 @@ class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		type = self.request.get("hostORstudent")
 		host_content = jinja_env.get_template('Templates/host.html')
-		messages = Room.query().fetch()
-		self.response.out.write(host_content.render())
-		for message in messages:
-			self.response.out.write(''' user message: %s ''' % (message.chat_messages))
+		messages = Room.query().filter(Room.host.IN([self.request.get('name')])).fetch()
+
+		output_variables = {
+		'messages': messages,
+		'name' : self.request.get("name")
+		}
+		self.response.out.write(host_content.render(output_variables))
+		print messages
+
+		# for message in messages:
+		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
 
 	def post(self):
-		chat_messages = self.request.get("chat_messages")
-		chat_box = Room(chat_messages = self.request.get("chat_messages"))
-		chat_box.put()
-
-
+		messages = Room.query().filter(Room.host.IN([self.request.get('name')])).fetch()
+		messages.append(self.request.get('chat_messages'))
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
-			self.response.out.write(content)
+			self.response.out.write(content.render())
+
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
 		if self.request.get('hostORstudent') == 'host':
-			new_room = Room(host = self.request.get("name"))
+			new_room = Room(host = self.request.get("name"), name = self.request.get("Room_name"))
 			new_room.put()
 			self.response.out.write(new_room)
-			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
+			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent') + "&roomName=" + self.request.get("Room_name"))
 		else:
 			self.redirect('/?name=' + self.request.get("name") + '&hostORstudent=' + self.request.get('hostORstudent'))
 class GetRoomsHandler(webapp2.RequestHandler):
