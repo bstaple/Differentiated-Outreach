@@ -19,7 +19,7 @@
     <div id = 'Rooms'>
     <form method = 'post'>
       {% for room in rooms %}
-        <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}&key=' name = "{{room.key}}">{{ room.name }}</a>
+        <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}&key={{ str(room.key) }}' name = "{{room.key}}">{{ room.name }}</a>
         <br/>
       {% endfor %}
     </form>
