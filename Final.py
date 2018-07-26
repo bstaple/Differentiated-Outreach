@@ -42,12 +42,17 @@ class Student(ndb.Model):
 	Host = ndb.StringProperty()
 
 class Room(ndb.Model):
+<<<<<<< HEAD
 
 		chat_messages = ndb.StringProperty(repeated = True)
+=======
+		chat_messages = ndb.StringProperty()
+>>>>>>> c69c72d77d23547002b6721dac2d9c7e9c1fb0e0
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
 		host_notes = ndb.StringProperty(repeated = True)
+<<<<<<< HEAD
 		def to_summary_dict(self):
 			return{
 	      # "key" is a property we get from ndb.Model - we can use this for easy retrieval of 1 specfic Model
@@ -67,6 +72,8 @@ class Room(ndb.Model):
 			'title': self.title,
 			'author': self.author
 		}
+=======
+>>>>>>> c69c72d77d23547002b6721dac2d9c7e9c1fb0e0
 
 
 class WaitRoom(ndb.Model):
@@ -122,10 +129,20 @@ class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		type = self.request.get("hostORstudent")
 		host_content = jinja_env.get_template('Templates/host.html')
+<<<<<<< HEAD
 
 		messages = Room.query().filter(name= self.request.get("Room_name"))
 
 		messages = Room.query().filter(name=self.request.get("Room_name"))
+=======
+		id = self.request.get('key')
+		key = ndb.Key(Room, int(id))
+		m = key.get()
+		messages = []
+		message = m.chat_messages
+		messages.append(message)
+
+>>>>>>> c69c72d77d23547002b6721dac2d9c7e9c1fb0e0
 
 
 		output_variables = {
@@ -139,6 +156,7 @@ class SendToRoom(webapp2.RequestHandler):
 		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
 
 	def post(self):
+<<<<<<< HEAD
 		rkey = self.request.get('key')
 
       # construct an ndb.Key object
@@ -159,6 +177,21 @@ class SendToRoom(webapp2.RequestHandler):
 				content = jinja_env.get_template('Templates/host.html')
 				self.response.out.write(content.render())
 				self.redirect('/room')
+=======
+		  id = self.request.get('key')
+		  print "Everything under this is what we want"
+		  print id
+		  print self.request
+		  key = ndb.Key('Room', int(id))
+		   #ndb.Key(urlsafe=rkey)
+		  m = key.get()
+		  print m
+		  m.chat_messages = self.request.get('chat_messages')
+		  m.put()
+		  if self.request.get("hostORstudent") == 'host':
+				content = jinja_env.get_template('Templates/host.html')
+				self.response.out.write(content.render())
+>>>>>>> c69c72d77d23547002b6721dac2d9c7e9c1fb0e0
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
