@@ -125,7 +125,7 @@ class SendToRoom(webapp2.RequestHandler):
 
       # construct an ndb.Key object
       	key = ndb.Key(urlsafe=rkey)
-      if key:
+      	if key:
         # use the ndb.Key object's get() method to retrieve the Model associated with that particular key
         m = key.get()
 		room_query_object.put()
