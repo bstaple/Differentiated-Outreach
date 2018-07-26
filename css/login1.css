@@ -1,0 +1,13 @@
+body,html{
+  background-color: #c2d2ea;
+  font-family: Ubuntu-Regular, sans-serif;
+}
+input[type='textbox']{
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
