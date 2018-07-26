@@ -108,7 +108,7 @@ class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		type = self.request.get("hostORstudent")
 		host_content = jinja_env.get_template('Templates/host.html')
-		messages = Room.query().filter(name=self.request.get("Room_name"))
+		messages = Room.query().filter(name= self.request.get("Room_name"))
 
 		output_variables = {
 		'messages': messages,
