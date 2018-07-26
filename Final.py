@@ -57,7 +57,7 @@ class WaitRoom(ndb.Model):
 
 class LoginPageHandler(webapp2.RequestHandler):
 	def get(self):
-		logIn_template = jinja_env.get_template('Templates/login.html')
+		logIn_template = jinja_env.get_template('Templates/loginFancy.html')
 		self.response.write(logIn_template.render())
 
 	def post(self):
