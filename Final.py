@@ -119,7 +119,6 @@ class SendToRoom(webapp2.RequestHandler):
 		}
 		print ["This is what should come out"] + messages
 		self.response.out.write(host_content.render(output_variables))
-
 		# for message in messages:
 		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
 
