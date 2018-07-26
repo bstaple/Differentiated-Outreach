@@ -42,6 +42,14 @@ class Student(ndb.Model):
 	Host = ndb.StringProperty()
 
 class Room(ndb.Model):
+<<<<<<< HEAD
+		chat_messages = ndb.StringProperty()
+		host = ndb.StringProperty()
+		name = ndb.StringProperty(default = 'Marco')
+		student_list = ndb.StringProperty(repeated = True)
+		host_notes = ndb.StringProperty(repeated = True)
+
+=======
 	chat_messages = ndb.StringProperty(repeated = True)
 	host = ndb.StringProperty()
 	name = ndb.StringProperty(default = 'Marco')
@@ -54,6 +62,7 @@ class Room(ndb.Model):
 			'title': self.title,
 			'author': self.author
 		}
+>>>>>>> 90c787deeb9e07f5fc2a2306f5efeea9b6156225
 
 class WaitRoom(ndb.Model):
 	host_owner = ndb.StringProperty(default = 'Marco')
@@ -108,7 +117,13 @@ class SendToRoom(webapp2.RequestHandler):
 	def get(self):
 		type = self.request.get("hostORstudent")
 		host_content = jinja_env.get_template('Templates/host.html')
-		messages = Room.query().filter(name=self.request.get("Room_name"))
+		id = self.request.get('key')
+		key = ndb.Key(Room, int(id))
+		m = key.get()
+		messages = []
+		message = m.chat_messages
+		messages.append(message)
+
 
 		output_variables = {
 		'messages': messages,
@@ -121,14 +136,27 @@ class SendToRoom(webapp2.RequestHandler):
 		# 	self.response.out.write(''' %s : %s ''' % (self.request.get("name"),message.chat_messages))
 
 	def post(self):
-      # get the key from the request
-	      rkey = self.request.get('key')
+		  id = self.request.get('key')
+		  print "Everything under this is what we want"
+		  print self.request.GET
+		  print id
+		  print self.request
 
-	      # construct an ndb.Key object
-	      key = ndb.Key(urlsafe=rkey)
-	      if key:
-	        # use the ndb.Key object's get() method to retrieve the Model associated with that particular key
-	        m = key.get()
+		  key = ndb.Key('Room', id)
+		   #ndb.Key(urlsafe=rkey)
+		  m = key.get()
+		  print m
+		  m.chat_messages = self.request.get('chat_messages')
+		  room_query_object.put()
+		  if self.request.get("hostORstudent") == 'host':
+				content = jinja_env.get_template('Templates/host.html')
+				self.response.out.write(content.render())
+
+      # construct an ndb.Key object
+      	key = ndb.Key(urlsafe=rkey)
+      	if key:
+        # use the ndb.Key object's get() method to retrieve the Model associated with that particular key
+        m = key.get()
 		room_query_object.put()
 		if self.request.get("hostORstudent") == 'host':
 			content = jinja_env.get_template('Templates/host.html')
