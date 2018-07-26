@@ -179,8 +179,8 @@ class GetRoomsHandler(webapp2.RequestHandler):
 
 print('done')
 app = webapp2.WSGIApplication([
-('/login', LoginPageHandler),
-('/', MainHandler),
+('/', LoginPageHandler),
+('/login', MainHandler),
 ('/create', CreateRoomHandler),
 ('/room', SendToRoom),
 ('/hostpage', HostPageHandler),
