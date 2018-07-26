@@ -44,6 +44,7 @@ class Student(ndb.Model):
 class Room(ndb.Model):
 
 		chat_messages = ndb.StringProperty(repeated = True)
+		student_chat_messages = ndb.StringProperty(repeated = True)
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
@@ -137,6 +138,7 @@ class SendToRoom(webapp2.RequestHandler):
 		  print input
 		  input.append(self.request.get('chat_message'))
 		  m.put()
+		  self.get()
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
