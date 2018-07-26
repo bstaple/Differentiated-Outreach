@@ -44,7 +44,6 @@ class Student(ndb.Model):
 class Room(ndb.Model):
 
 		chat_messages = ndb.StringProperty(repeated = True)
-		student_chat_messages = ndb.StringProperty(repeated = True)
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
 		student_list = ndb.StringProperty(repeated = True)
