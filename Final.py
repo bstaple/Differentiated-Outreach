@@ -6,7 +6,7 @@ import webapp2
 import json
 import jinja2
 import os
-import time
+import datetime
 import random
 
 jinja_env = jinja2.Environment(
@@ -129,7 +129,7 @@ class SendToRoom(webapp2.RequestHandler):
 		  key = ndb.Key(urlsafe=rkey)
 		  m = key.get()
 		  m_messages = m.chat_messages
-		  m_messages += self.request.get('chat_messages')
+		  m_messages = self.request.get('chat_messages')
 		  room_query_object.put()
 		  if self.request.get("hostORstudent") == 'host':
 				content = jinja_env.get_template('Templates/host.html')
