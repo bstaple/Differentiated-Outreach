@@ -38,8 +38,8 @@ class Host(ndb.Model):
 
 class Student(ndb.Model):
 	name = ndb.StringProperty()
-	notes = ndb.StringProperty(repeated = True)
 	questions = ndb.StringProperty(repeated = True)
+	note_pad = ndb.StringProperty(repeated = True)
 
 class Room(ndb.Model):
 
@@ -78,44 +78,24 @@ class LoginPageHandler(webapp2.RequestHandler):
 			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-result_template = jinja_env.get_template('Templates/showrooms.html')
-
-class ShowRoomsHandler(webapp2.RequestHandler):
-	def dispatch(self):
-		student = self.request.get("studentKey")
-		# for room in Room.query().fetch():
-		# 	print room.name
-		# 	self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
-		# 	self.response.out.write('<br>')
-		print("Rooms shown successfully.")
-
-		result_template = jinja_env.get_template('Templates/rooms.html')
-		rooms = Room.query().fetch()
-		if self.request.get("hostORstudent") == "students":
-			result_dictionary = {
-			'rooms' : rooms,
-			"student_check" : ''
-			}
-			self.reponse.out.write(result_template.render(result_dictionary))
-		if self.request.get('hostORstudent') == 'host':
-			result_dictionary = {
-			'rooms' : rooms,
-			'student_key' : student,
-			"student_check" : 'students'
-			}
-			self.reponse.out.write(result_template.render(result_dictionary))
 
 
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
+		print("Rooms shown successfully.")
+		print "This is the key" + self.request.get("studentKey")
 		result_template = jinja_env.get_template('Templates/rooms.html')
 		rooms = Room.query().fetch()
+		if self.request.get('hostORstudent') == 'students':
+			student_id = self.request.get("studentKey")
+			student_key = ndb.Key('Student', int(student_id))
+			q = student_key.get()
 		result_dictionary = {
 		'rooms' : rooms,
-		'name' : self.request.get('name'),
-		'hostORstudent' : self.request.get('hostORstudent')
+		'student' :  self.request.get('studentKey'),
+		'hostORstudent' : self.request.get("hostORstudent"),
+		'name' : self.request.get("name"),
 		}
-		print("Rooms shown successfully.")
 		self.response.out.write(result_template.render(result_dictionary))
 
 class SendToRoom(webapp2.RequestHandler):
@@ -149,30 +129,30 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
-<<<<<<< HEAD
 			student_id = self.request.get("studentKey")
 			print "Student ID" + student_id
 			student_key = ndb.Key('Student', int(student_id))
 			q = student_key.get()
 			student_questions = q.questions
-=======
-
->>>>>>> e17aa8d6313519a02fc7fa0114f5261b288da917
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
+			student_notes = q.note_pad
 
 			output_variables = {
 			'messages': messages,
 			'name' : self.request.get("name"),
-			'questions' : student_questions
+			'questions' : student_questions,
+			'notes' : student_notes
 			}
 			print ["This is what should come out"] + messages
 			self.response.out.write(student_content.render(output_variables))
 
 	def post(self):
+		  print "I'm in the post"
 		  id = self.request.get('key')
 		  question = self.request.get('student_question')
+		  note = self.request.get("note_input")
 		  print "Everything under this is what we want"
 		  print id
 		  print self.request
@@ -184,19 +164,26 @@ class SendToRoom(webapp2.RequestHandler):
 		  questions = m.question_list
 		  print input
 		  input.append(self.request.get('chat_message'))
-		  if self.request.get("hostORstudent") == 'host':
-			  questions.append(self.request.get("name") + " asked : " + question)
 
-			  m.put()
+		  print "After append: "
+		  print input
+		  # if self.request.get("hostORstudent") == 'host':
+			#   questions.append(self.request.get("name") + " asked : " + question)
+		  #
+			#   m.put()
 		  if self.request.get("hostORstudent") == 'students':
+
 			  questions.append(self.request.get("name") + " asked : " + question)
 			  m.put()
 			  student_id = self.request.get("studentKey")
 			  student_key = ndb.Key('Student', int(student_id))
 			  q = student_key.get()
 			  student_questions = q.questions
+			  student_notes = q.note_pad
 			  student_questions.append(question)
+			  student_notes.append(note)
 			  q.put()
+		  m.put()
 		  self.get()
 
 

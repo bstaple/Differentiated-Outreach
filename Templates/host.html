@@ -9,7 +9,12 @@
         <h1 align="left"> Quanta Canvas Host: </h1>
         <div id = 'messages'>
           {% for message in messages %}
-            <p>{{ message}}</p>
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+        <div id = 'room_questions'>
+          {% for question in question_list %}
+            <p>{{ question }}</p>
           {% endfor %}
         </div>
         <div>
@@ -18,5 +23,8 @@
             <input type="submit" value="send message" id="send_message">
           </form>
         </div>
+        <script>
+        document.getElementById("typerhost").focus();
+        </script>
       </body>
 </html>

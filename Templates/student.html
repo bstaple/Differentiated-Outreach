@@ -10,23 +10,27 @@
     <form method = 'post'>
     <div id = 'Host'>
       {% for message in messages %}
-        <p>{{ message}}</p>
+        <p>{{ message }}</p>
       {% endfor %}
     </div>
     <div id = 'Student'>
-      Notes
+      {% for note in notes %}
+        <p>{{ note }}</p>
+      {% endfor %}
     </div>
     <div id = 'Student_Questions'>
-      Questions
+      {% for question in questions %}
+        <p>{{ question }}</p>
+      {% endfor %}
     </div>
-      <form>
+      <form method = 'post'>
        <input type = "texbox" placeholder="Question?" name = 'student_question' id = 'Question_Box' />
        <br>
        <input type= 'submit' value = "Submit" id = 'submitQ'/>
      </form>
   <!-- This section will let the student write !-->
-      <form>
-        <input id = 'Student_Notes' type = "textbox" placeholder="Notes"/>
+      <form method = 'post'>
+        <input id = 'Student_Notes' type = "textbox" name = 'note_input' placeholder="Notes"/>
         <br>
         <input id = "Submit_For_Notes" type = 'submit' value = 'Submit'/>
       </form>
