@@ -38,8 +38,8 @@ class Host(ndb.Model):
 
 class Student(ndb.Model):
 	name = ndb.StringProperty()
-	notes = ndb.BlobProperty(repeated = True)
-	Host = ndb.StringProperty()
+	notes = ndb.StringProperty(repeated = True)
+	questions = ndb.StringProperty(repeated = True)
 
 class Room(ndb.Model):
 
@@ -128,6 +128,7 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
+			
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
@@ -179,8 +180,8 @@ class GetRoomsHandler(webapp2.RequestHandler):
 
 print('done')
 app = webapp2.WSGIApplication([
-('/', LoginPageHandler),
-('/login', MainHandler),
+('/login', LoginPageHandler),
+('/', MainHandler),
 ('/create', CreateRoomHandler),
 ('/room', SendToRoom),
 ('/hostpage', HostPageHandler),
