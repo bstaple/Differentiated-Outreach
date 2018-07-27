@@ -69,7 +69,7 @@ class LoginPageHandler(webapp2.RequestHandler):
 		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-result_template = jinja_env.get_template('Templates/rooms.html')
+result_template = jinja_env.get_template('Templates/showrooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
@@ -128,7 +128,7 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
-			
+
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
