@@ -46,7 +46,7 @@ class Room(ndb.Model):
 		chat_messages = ndb.StringProperty(repeated = True)
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
-		question_list = ndb.StringProperty(repeated = True)
+		student_list = ndb.StringProperty(repeated = True)
 		host_notes = ndb.StringProperty(repeated = True)
 
 
@@ -64,51 +64,32 @@ class LoginPageHandler(webapp2.RequestHandler):
 		username = self.request.get("username")
 		password = self.request.get("password")
 		user_type = self.request.get('hostORstudent')
-
-		if user_type == 'students':
-			new_Student = Student(name = username)
-			accounts = Account(username = username,password = password,user_type = user_type)
-			accounts.put()
-			new_Student.put()
-			print "Student Key" + str(new_Student.key.id())
-			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent")+"&studentKey="+str(new_Student.key.id()))
-		else:
-			accounts = Account(username = username,password = password,user_type = user_type)
-			accounts.put()
-			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
+		accounts = Account(username = username,password = password,user_type = user_type)
+		accounts.put()
+		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
 result_template = jinja_env.get_template('Templates/showrooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
-		student = self.request.get("studentKey")
+
 		# for room in Room.query().fetch():
 		# 	print room.name
 		# 	self.response.out.write("<input type = 'button' value = 'Go to %s room' action ='/room?roomName=%s />" % (room.host, room.name))
 		# 	self.response.out.write('<br>')
 		print("Rooms shown successfully.")
 
-		result_template = jinja_env.get_template('Templates/rooms.html')
+		result_template = jinja_env.get_template('Templates/showrooms.html')
 		rooms = Room.query().fetch()
-		if self.request.get("hostORstudent") == "students":
-			result_dictionary = {
-			'rooms' : rooms,
-			"student_check" : ''
-			}
-			self.reponse.out.write(result_template.render(result_dictionary))
-		if self.request.get('hostORstudent') == 'host':
-			result_dictionary = {
-			'rooms' : rooms,
-			'student_key' : student,
-			"student_check" : 'students'
-			}
-			self.reponse.out.write(result_template.render(result_dictionary))
-
+		result_dictionary = {
+		'rooms' : rooms,
+		}
+		self.reponse.out.write(result_template.render(result_dictionary))
 
 class MainHandler(webapp2.RequestHandler):
 	def get(self):
-		result_template = jinja_env.get_template('Templates/rooms.html')
+		result_template = jinja_env.get_template('Templates/showrooms.html')
 		rooms = Room.query().fetch()
 		result_dictionary = {
 		'rooms' : rooms,
@@ -127,7 +108,6 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
-			questions = m.question_list
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
@@ -138,8 +118,7 @@ class SendToRoom(webapp2.RequestHandler):
 
 			output_variables = {
 			'messages': messages,
-			'name' : self.request.get("name"),
-			'question_list' : questions,
+			'name' : self.request.get("name")
 			}
 			print ["This is what should come out"] + messages
 			self.response.out.write(host_content.render(output_variables))
@@ -149,30 +128,20 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
-<<<<<<< HEAD
-			student_id = self.request.get("studentKey")
-			print "Student ID" + student_id
-			student_key = ndb.Key('Student', int(student_id))
-			q = student_key.get()
-			student_questions = q.questions
-=======
 
->>>>>>> e17aa8d6313519a02fc7fa0114f5261b288da917
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
 
 			output_variables = {
 			'messages': messages,
-			'name' : self.request.get("name"),
-			'questions' : student_questions
+			'name' : self.request.get("name")
 			}
 			print ["This is what should come out"] + messages
 			self.response.out.write(student_content.render(output_variables))
 
 	def post(self):
 		  id = self.request.get('key')
-		  question = self.request.get('student_question')
 		  print "Everything under this is what we want"
 		  print id
 		  print self.request
@@ -181,28 +150,10 @@ class SendToRoom(webapp2.RequestHandler):
 		  m = key.get()
 		  print m
 		  input = m.chat_messages
-		  questions = m.question_list
 		  print input
 		  input.append(self.request.get('chat_message'))
-		  if self.request.get("hostORstudent") == 'host':
-			  questions.append(self.request.get("name") + " asked : " + question)
-
-			  m.put()
-		  if self.request.get("hostORstudent") == 'students':
-			  questions.append(self.request.get("name") + " asked : " + question)
-			  m.put()
-			  student_id = self.request.get("studentKey")
-			  student_key = ndb.Key('Student', int(student_id))
-			  q = student_key.get()
-			  student_questions = q.questions
-			  student_questions.append(question)
-			  q.put()
+		  m.put()
 		  self.get()
-
-
-
-
-
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
