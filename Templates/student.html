@@ -8,27 +8,31 @@
     <h1 align= "center"><img src="Quantum_Logo.png" width= 10% height= 100px/> Quanta Canvas Student</h1>
   <!-- This section will take the output from the Host !-->
     <form method = 'post'>
-      <input type = "texbox" placeholder="Question?" name = 'student_question' />
-      <input type= 'submit' value = "Submit" />
-    <section>
-      <p> Live Feed </p>
-    </section>
-
-    <section>
-      <p> Student </p>
-    </section>
-
-    <div>
+    <div id = 'Host'>
+      {% for message in messages %}
+        <p>{{ message}}</p>
+      {% endfor %}
+    </div>
+    <div id = 'Student'>
+      Notes
+    </div>
+    <div id = 'Student_Questions'>
+      Questions
+    </div>
+      <form>
+       <input type = "texbox" placeholder="Question?" name = 'student_question' id = 'Question_Box' />
+       <br>
+       <input type= 'submit' value = "Submit" id = 'submitQ'/>
+     </form>
   <!-- This section will let the student write !-->
       <form>
-        <input id = 'typer' type = "textbox"/>
+        <input id = 'Student_Notes' type = "textbox" placeholder="Notes"/>
+        <br>
+        <input id = "Submit_For_Notes" type = 'submit' value = 'Submit'/>
       </form>
-    {% for message in messages %}
+    <!-- {% for message in messages %}
       <div><p>{{ name }} : {{ message}}</p></div>
     {% endfor %}
-    </div>
-    <div>
-      <input id= "submitbutton" type = 'submit' value = 'Submit'/>
-    </div>
+    </div> -->
   </body>
 </html>
