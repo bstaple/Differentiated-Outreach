@@ -18,10 +18,20 @@
     </form>
     <div id = 'Rooms'>
     <form method = 'post'>
+      {% if not student_check %}
+      {% for room in rooms %}
+        <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}&key={{ room.key.id() }}&studentKey={{ student_key }}'>{{ room.name }}</a>
+        <br/>
+      {% endfor %}
+      {% endif %}
+      {% if student_check %}
       {% for room in rooms %}
         <a href = '/room?name={{ name }}&hostORstudent={{ hostORstudent }}&key={{ room.key.id() }}'>{{ room.name }}</a>
         <br/>
       {% endfor %}
+      {% endif %}
+
+
     </form>
   </div>
 
