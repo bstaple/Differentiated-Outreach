@@ -1,15 +1,36 @@
 body{
+   background: linear-gradient(to bottom right, #c64313, #7110a5);
 
-  background-color: #4e77ba;
-
+}
+#headertitle{
+  background-image: url("https://www.sciencealert.com/images/articles/processed/quantum_pattern_1024.jpg");
+  height: 100px;
+  color: white;
+  padding: 1%;
+}
+#getnewrooms{
+  padding: 3%;
 }
 
 input[type='submit']{
-   padding:5px;
+   padding:right;
+   width:20%;
+   height:10%;
    border:2px solid #ccc;
    -webkit-border-radius: 5px;
    border-radius: 5px;
+   align: center;
 
+}
+
+#roomname{
+  padding:right;
+  width:20%;
+  height:10%;
+  border:2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  align: center;
 
 }
 
@@ -20,9 +41,23 @@ input[type='button']{
    border: 2px solid #ccc;
    -webkit-border-radius: 5px;
 
-
 }
 
-#Rooms {
-  color: : white;
+input[type='textbox']{
+  padding:5px;
+  width:20%;
+  height:5%;
+  border:2px solid #ccc;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+}
+
+#Rooms{
+  color: white;
+}
+
+a{
+padding: 50%;
+
+
 }

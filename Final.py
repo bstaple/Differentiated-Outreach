@@ -46,7 +46,7 @@ class Room(ndb.Model):
 		chat_messages = ndb.StringProperty(repeated = True)
 		host = ndb.StringProperty()
 		name = ndb.StringProperty(default = 'Marco')
-		question_list = ndb.StringProperty(repeated = True)
+		student_list = ndb.StringProperty(repeated = True)
 		host_notes = ndb.StringProperty(repeated = True)
 
 
@@ -64,18 +64,9 @@ class LoginPageHandler(webapp2.RequestHandler):
 		username = self.request.get("username")
 		password = self.request.get("password")
 		user_type = self.request.get('hostORstudent')
-
-		if user_type == 'students':
-			new_Student = Student(name = username)
-			accounts = Account(username = username,password = password,user_type = user_type)
-			accounts.put()
-			new_Student.put()
-			print "Student Key" + str(new_Student.key.id())
-			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent")+"&studentKey="+str(new_Student.key.id()))
-		else:
-			accounts = Account(username = username,password = password,user_type = user_type)
-			accounts.put()
-			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
+		accounts = Account(username = username,password = password,user_type = user_type)
+		accounts.put()
+		self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
 
@@ -107,7 +98,6 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
-			questions = m.question_list
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
@@ -118,8 +108,7 @@ class SendToRoom(webapp2.RequestHandler):
 
 			output_variables = {
 			'messages': messages,
-			'name' : self.request.get("name"),
-			'question_list' : questions,
+			'name' : self.request.get("name")
 			}
 			print ["This is what should come out"] + messages
 			self.response.out.write(host_content.render(output_variables))
@@ -161,7 +150,6 @@ class SendToRoom(webapp2.RequestHandler):
 		  m = key.get()
 		  print m
 		  input = m.chat_messages
-		  questions = m.question_list
 		  print input
 		  input.append(self.request.get('chat_message'))
 
@@ -185,11 +173,6 @@ class SendToRoom(webapp2.RequestHandler):
 			  q.put()
 		  m.put()
 		  self.get()
-
-
-
-
-
 
 class CreateRoomHandler(webapp2.RequestHandler):
 	def post(self):
