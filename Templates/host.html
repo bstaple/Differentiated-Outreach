@@ -12,6 +12,11 @@
             <p>{{ message}}</p>
           {% endfor %}
         </div>
+        <div id = 'Student_Q'>
+          {% for message in messages %}
+            <p>{{ message}}</p>
+          {% endfor %}
+        </div>
         <div>
           <form method = "post">
             <input id = 'typerhost' type = "textfield" name = 'chat_message'/>
