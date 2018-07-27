@@ -1,18 +1,25 @@
 <html>
   <head>
     <title>Rooms</title>
-    <link type="text/css" rel="stylesheet" href="/css/rooms.css">
+    <link type="text/css" rel="stylesheet" href="/css/showrooms.css">
+
   </head>
 
   <body>
-    <a href="/?name={{ name }}&hostORstudent={{ hostORstudent }}">get new rooms</a>
+  <!--  <a href="/?name={{ name }}&hostORstudent={{ hostORstudent }}">get new rooms</a> !-->
+  <div id= headertitle>
 
-    <form action = '/?name={{ name }}&hostORstudent={{ hostORstudent }}'>
+   <h1 align = "center"> Rooms</h1>
+ </div>
+    <form action = '/?name={{ name }}&hostORstudent={{ hostORstudent }}' align = "center" id="getnewrooms">
       <input type = 'submit' value = 'Get new rooms'/>
     </form>
+
     <a href="/login">Log In </a>
-    <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}'>
-      <input type = "textbox" name = "Room_name" placeholder= "Room Name"/>
+
+
+    <form method="post"  action = '/create?name={{ name }}&hostORstudent={{ hostORstudent }}' align= "center">
+      <input id= "roomname" type = "textbox" name = "Room_name" placeholder= "Room Name"/>
       <input type = 'submit' value = 'Create a new room!'/>
       <br/>
     </form>
