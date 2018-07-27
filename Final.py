@@ -78,7 +78,7 @@ class LoginPageHandler(webapp2.RequestHandler):
 			self.redirect('/?name=' + self.request.get("username") + '&hostORstudent=' + self.request.get("hostORstudent"))
 
 
-result_template = jinja_env.get_template('Templates/rooms.html')
+result_template = jinja_env.get_template('Templates/showrooms.html')
 
 class ShowRoomsHandler(webapp2.RequestHandler):
 	def dispatch(self):
@@ -149,11 +149,15 @@ class SendToRoom(webapp2.RequestHandler):
 			key = ndb.Key('Room', int(id))
 			m = key.get()
 			messages = m.chat_messages
+<<<<<<< HEAD
 			student_id = self.request.get("studentKey")
 			print "Student ID" + student_id
 			student_key = ndb.Key('Student', int(student_id))
 			q = student_key.get()
 			student_questions = q.questions
+=======
+
+>>>>>>> e17aa8d6313519a02fc7fa0114f5261b288da917
 			print messages
 			# messages.append(str(message))
 			print ["Messages : "] + messages
